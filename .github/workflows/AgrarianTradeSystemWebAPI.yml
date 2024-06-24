@@ -2,7 +2,7 @@ name: Build and deploy .NET Core application to Web App AgrarianTradeSystemWebAP
 on:
   push:
     branches:
-    - development
+    - master
 env:
   AZURE_WEBAPP_NAME: AgrarianTradeSystemWebAPI
   AZURE_WEBAPP_PACKAGE_PATH: AgrarianTradeSystemWebAPI\publish
@@ -23,7 +23,7 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v3
       with:
@@ -64,7 +64,7 @@ jobs:
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-        publish-profile: ${{ secrets.AgrarianTradeSystemWebAPI_C896 }}
+        publish-profile: ${{ secrets.AgrarianTradeSystemWebAPI_D7C5 }}
     - name: Azure Login
       uses: azure/login@v1
       with:
