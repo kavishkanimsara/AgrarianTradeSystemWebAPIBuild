@@ -43,6 +43,24 @@ namespace AgrarianTradeSystemWebAPI.Controllers
 			return products;
 		}
 
+		[HttpGet("farmer-product/{farmerId}")]
+		public async Task<ActionResult<PagedResult<Product>>> GetAllProductPage(string farmerId, int pageNumber, int pageSize)
+		{
+			if (pageNumber < 1 || pageSize < 1)
+			{
+				return BadRequest("Page number and page size must be greater than 0.");
+			}
+
+			var pagedResult = await _productServices.GetAllProductsByFarmerPage(farmerId, pageNumber, pageSize);
+
+			if (pagedResult.Items == null || !pagedResult.Items.Any())
+			{
+				return NotFound();
+			}
+
+			return Ok(pagedResult);
+		}
+
 		//get sorted products
 		[HttpGet("sorted")]
 		public async Task<ActionResult<List<Product>>> GetProductsSortedByPrice([FromQuery] string sortOrder = "asc")

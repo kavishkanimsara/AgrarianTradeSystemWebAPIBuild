@@ -19,6 +19,8 @@ namespace AgrarianTradeSystemWebAPI.Services.ProductServices
 		Task<List<Product>?> UpdateProductImage(int id, String newFileUrl);
 		Task<List<Product>> GetAllProductsByFarmer(string farmerId);
 		Task<List<Product>> SearchAsync(string searchTerm);
+		Task<PagedResult<Product>> GetAllProductsByFarmerPage(string farmerId, int pageNumber, int pageSize);
 
-    }
+
+	}
 }
