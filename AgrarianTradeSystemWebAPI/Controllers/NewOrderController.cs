@@ -32,6 +32,29 @@ namespace AgrarianTradeSystemWebAPI.Controllers
 				return BadRequest($"Failed to create order: {errorMessage}");
 			}
 		}
+		[HttpPost("CreateOrders")]
+		public async Task<IActionResult> CreateOrders([FromBody] List<OrderCreationDto> orderCreateDtos)
+		{
+			if (orderCreateDtos == null || !orderCreateDtos.Any())
+			{
+				return BadRequest("No orders provided.");
+			}
+
+			try
+			{
+				foreach (var orderCreateDto in orderCreateDtos)
+				{
+					await _orderService.CreateOrderAsync(orderCreateDto);
+				}
+
+				return Ok("Orders created successfully");
+			}
+			catch (Exception ex)
+			{
+				var errorMessage = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
+				return BadRequest($"Failed to create orders: {errorMessage}");
+			}
+		}
 
 		//get all couriers
 		[HttpGet]

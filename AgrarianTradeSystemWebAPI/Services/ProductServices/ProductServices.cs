@@ -28,12 +28,35 @@ namespace AgrarianTradeSystemWebAPI.Services.ProductServices
 			return product;
 		}
 
+		//get all products by farmer ID
 		public async Task<List<Product>> GetAllProductsByFarmer(string farmerId)
 		{
 			var products = await _context.Products.Where(p => p.FarmerID == farmerId).ToListAsync(); 
 			return products;
 		}
 
+		//get all products by farmer ID with pagination
+		public async Task<PagedResult<Product>> GetAllProductsByFarmerPage(string farmerId, int pageNumber, int pageSize)
+		{
+			var query = _context.Products.Where(p => p.FarmerID == farmerId).OrderByDescending(p => p.ProductID); ;
+
+			var totalItems = await query.CountAsync();
+			var totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+
+			var items = await query
+				.Skip((pageNumber - 1) * pageSize)
+				.Take(pageSize)
+				.ToListAsync();
+
+			return new PagedResult<Product>
+			{
+				Items = items,
+				TotalItems = totalItems,
+				PageNumber = pageNumber,
+				PageSize = pageSize,
+				TotalPages = totalPages
+			};
+		}
 
 		//get sorted product list
 		public async Task<List<Product>> GetAllProductsSortedByPriceAsync(bool ascending = true)
