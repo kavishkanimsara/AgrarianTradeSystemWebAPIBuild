@@ -34,7 +34,10 @@ namespace AgrarianTradeSystemWebAPI.Services.ProductServices
 			if (pageNumber < 1) pageNumber = 1;
 			if (pageSize < 1) pageSize = 10;
 
-			var query = _context.Products.AsQueryable();
+			// Query products and order them by OrdersCount in descending order
+			var query = _context.Products
+								.OrderByDescending(p => p.OrdersCount)
+								.AsQueryable();
 			var totalItems = await query.CountAsync();
 			var totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
 			var items = await query

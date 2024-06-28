@@ -26,6 +26,8 @@ namespace AgrarianTradeSystemWebAPI.Models
 
         public int MinimumQuantity { get; set;}
 
+        public int OrdersCount { get; set; } = 0;
+
         public DateTime DateCreated{ get; set; } = DateTime.Now;
 
         [JsonIgnore]
