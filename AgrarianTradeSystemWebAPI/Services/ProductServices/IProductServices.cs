@@ -7,6 +7,7 @@ namespace AgrarianTradeSystemWebAPI.Services.ProductServices
 	public interface IProductServices
 	{
 		Task<List<Product>> GetAllProduct();
+		Task<PagedResult<Product>> GetAllProductsPage(int pageNumber, int pageSize);
 		Task<Product?> GetSingleProduct(int id);
 		Task<List<Product>> AddProduct(Product product);
 		Task<List<Product>?> UpdateProduct(int id, [FromForm] Product request, String newFileUrl);
