@@ -28,6 +28,30 @@ namespace AgrarianTradeSystemWebAPI.Services.ProductServices
 			return product;
 		}
 
+		//get all products with pagination
+		public async Task<PagedResult<Product>> GetAllProductsPage( int pageNumber, int pageSize)
+		{
+			if (pageNumber < 1) pageNumber = 1;
+			if (pageSize < 1) pageSize = 10;
+
+			var query = _context.Products.AsQueryable();
+			var totalItems = await query.CountAsync();
+			var totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+			var items = await query
+				.Skip((pageNumber - 1) * pageSize)
+				.Take(pageSize)
+				.ToListAsync();
+
+			return new PagedResult<Product>
+			{
+				Items = items,
+				TotalItems = totalItems,
+				PageNumber = pageNumber,
+				PageSize = pageSize,
+				TotalPages = totalPages
+			};
+		}
+
 		//get all products by farmer ID
 		public async Task<List<Product>> GetAllProductsByFarmer(string farmerId)
 		{
