@@ -73,7 +73,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 builder.Services.AddCors(option =>
 {
 	option.AddPolicy(name: "ReactJSDomain",
-        policy => policy.WithOrigins("https://agrarian-trade-system-frontend.vercel.app", "http://localhost:5173").AllowAnyHeader().AllowAnyMethod());
+        policy => policy.WithOrigins("https://agrarian-trade-system-frontend.vercel.app", "http://localhost:5173" , "https://ats-admin-dashboard.vercel.app").AllowAnyHeader().AllowAnyMethod());
 });
 
 builder.Services.AddAuthentication()
