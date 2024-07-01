@@ -20,7 +20,7 @@ namespace AgrarianTradeSystemWebAPI.Services.ProductServices
 
 		public DataContext Context { get; }
 
-		//get all products 
+		//get all products list
 		public async Task<List<Product>> GetAllProduct()
 		{
 
@@ -34,7 +34,6 @@ namespace AgrarianTradeSystemWebAPI.Services.ProductServices
 			if (pageNumber < 1) pageNumber = 1;
 			if (pageSize < 1) pageSize = 10;
 
-			// Query products and order them by OrdersCount in descending order
 			var query = _context.Products
 								.OrderByDescending(p => p.OrdersCount)
 								.AsQueryable();
@@ -196,7 +195,7 @@ namespace AgrarianTradeSystemWebAPI.Services.ProductServices
 			return await _context.Products.ToListAsync();
 		}
 
-		//update
+		//update produc
 		public async Task<List<Product>?> UpdateProduct(int id, [FromForm] Product request, String newFileUrl)
 		{
 			//find data from db
