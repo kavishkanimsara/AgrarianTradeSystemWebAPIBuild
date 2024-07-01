@@ -14,10 +14,9 @@ namespace AgrarianTradeSystemWebAPI.Services.NewOrderServices
             _context = context;
         }
 
-		//create new orders
 		public async Task<Orders> CreateOrderAsync(OrderCreationDto orderCreateModel)
 		{
-			
+			// Create a new order
 			var order = new Orders
 			{
 				BuyerID = orderCreateModel.BuyerID,
@@ -32,14 +31,33 @@ namespace AgrarianTradeSystemWebAPI.Services.NewOrderServices
 				CourierID = orderCreateModel.CourierID,
 				PickupDate = orderCreateModel.PickupDate,
 				DeliveryDate = orderCreateModel.DeliveryDate,
-                TotalQuantity = orderCreateModel.TotalQuantity
-            };
+				TotalQuantity = orderCreateModel.TotalQuantity
+			};
 
+			// Add the order to the context
 			_context.Orders.Add(order);
 			await _context.SaveChangesAsync();
 
+			// Fetch the related product
+			var product = await _context.Products.FindAsync(orderCreateModel.ProductID);
+			if (product != null)
+			{
+				// Increment the OrdersCount for the product
+				product.OrdersCount += 1;
+
+				// Save the changes to the product
+				await _context.SaveChangesAsync();
+			}
+			else
+			{
+				// Handle the case where the product is not found
+				throw new Exception("Product not found");
+			}
+
 			return order;
 		}
+
+
 
 		//get couriers list
 		public async Task<List<CourierListDto>> GetCourierListAsync()

@@ -30,7 +30,30 @@ namespace AgrarianTradeSystemWebAPI.Controllers
 
 			return await _productServices.GetAllProduct();
 		}
-		
+		//get all product list with pagination
+		[HttpGet("product-list")]
+		public async Task<ActionResult<PagedResult<Product>>> GetAllProductPage(int pageNumber = 1, int pageSize = 10)
+		{
+			if (pageNumber < 1) pageNumber = 1;
+			if (pageSize < 1) pageSize = 10;
+
+			try
+			{
+				var result = await _productServices.GetAllProductsPage(pageNumber, pageSize);
+
+				if (result.Items == null || result.Items.Count == 0)
+				{
+					return NotFound(new { message = "No products found." });
+				}
+
+				return Ok(result);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, new { message = "An error occurred while retrieving products.", details = ex.Message });
+			}
+		}
+
 		//get product list by farmer ID
 		[HttpGet("farmer/{farmerId}")]
 		public async Task<ActionResult<List<Product>>> GetAllProduct(string farmerId)
@@ -43,6 +66,7 @@ namespace AgrarianTradeSystemWebAPI.Controllers
 			return products;
 		}
 
+		//get product list by farmer ID with pagination
 		[HttpGet("farmer-product/{farmerId}")]
 		public async Task<ActionResult<PagedResult<Product>>> GetAllProductPage(string farmerId, int pageNumber, int pageSize)
 		{

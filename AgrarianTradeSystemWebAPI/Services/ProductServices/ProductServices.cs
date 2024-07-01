@@ -20,12 +20,38 @@ namespace AgrarianTradeSystemWebAPI.Services.ProductServices
 
 		public DataContext Context { get; }
 
-		//get all products 
+		//get all products list
 		public async Task<List<Product>> GetAllProduct()
 		{
 
 			var product = await _context.Products.ToListAsync(); //retrieve data from db
 			return product;
+		}
+
+		//get all products with pagination
+		public async Task<PagedResult<Product>> GetAllProductsPage( int pageNumber, int pageSize)
+		{
+			if (pageNumber < 1) pageNumber = 1;
+			if (pageSize < 1) pageSize = 10;
+
+			var query = _context.Products
+								.OrderByDescending(p => p.OrdersCount)
+								.AsQueryable();
+			var totalItems = await query.CountAsync();
+			var totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+			var items = await query
+				.Skip((pageNumber - 1) * pageSize)
+				.Take(pageSize)
+				.ToListAsync();
+
+			return new PagedResult<Product>
+			{
+				Items = items,
+				TotalItems = totalItems,
+				PageNumber = pageNumber,
+				PageSize = pageSize,
+				TotalPages = totalPages
+			};
 		}
 
 		//get all products by farmer ID
@@ -169,7 +195,7 @@ namespace AgrarianTradeSystemWebAPI.Services.ProductServices
 			return await _context.Products.ToListAsync();
 		}
 
-		//update
+		//update produc
 		public async Task<List<Product>?> UpdateProduct(int id, [FromForm] Product request, String newFileUrl)
 		{
 			//find data from db
