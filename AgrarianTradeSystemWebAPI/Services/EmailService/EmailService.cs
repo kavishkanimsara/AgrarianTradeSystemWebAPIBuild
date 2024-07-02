@@ -25,7 +25,7 @@ namespace AgrarianTradeSystemWebAPI.Services.EmailService
             {
                 Text = $"<html><body><h3>Hello {fname} {lname},</h3><p>Thank you for registering to the Agrarian Trading System.<br>" +
                 $"Please use the following link to verify your email.</p>" +
-                $"<a href='http://localhost:5173/verify-email?token={token}'>http://localhost:5173/verify-email?token={token}</a></body></html>"
+                $"<a href='https://agrarian-trade-system-frontend.vercel.app/verify-email?token={token}'>https://agrarian-trade-system-frontend.vercel.app/verify-email?token={token}</a></body></html>"
             };
             using var smtp = new SmtpClient();
             smtp.Connect(_config.GetSection("EmailConfig:EmailHost").Value, 587, SecureSocketOptions.StartTls);
@@ -44,7 +44,7 @@ namespace AgrarianTradeSystemWebAPI.Services.EmailService
                 Text = $"<html><body><h3>Hello {fname} {lname},</h3><p>Thank you for registering to the Agrarian Trading System.<br>" +
                 $"One of our admin will review your application and accept withn 2-3 business days. Please use the following link to verify your email." +
                 $" And it can confirm the acceptance your application</p>" +
-                $"<a href='http://localhost:5173/verify-email?token={token}'>http://localhost:5173/verify-email?token={token}</a></body></html>"
+                $"<a href='https://agrarian-trade-system-frontend.vercel.app/verify-email?token={token}'>https://agrarian-trade-system-frontend.vercel.app/verify-email?token={token}</a></body></html>"
             };
             using var smtp = new SmtpClient();
             smtp.Connect(_config.GetSection("EmailConfig:EmailHost").Value, 587, SecureSocketOptions.StartTls);
@@ -79,7 +79,7 @@ namespace AgrarianTradeSystemWebAPI.Services.EmailService
             email.Body = new TextPart(TextFormat.Html)
             {
                 Text = $"<html><body><p>Please click the following link to verify your email.</p>" +
-                $"<a href='http://localhost:5173/verify-email?token={token}'>http://localhost:5173/verify-email?token={token}</a></body></html>"
+                $"<a href='https://agrarian-trade-system-frontend.vercel.app/verify-email?token={token}'>https://agrarian-trade-system-frontend.vercel.app/verify-email?token={token}</a></body></html>"
             };
             using var smtp = new SmtpClient();
             smtp.Connect(_config.GetSection("EmailConfig:EmailHost").Value, 587, SecureSocketOptions.StartTls);
